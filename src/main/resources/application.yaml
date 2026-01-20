@@ -1,3 +1,15 @@
 spring:
   application:
     name: demo
+  data:
+    mongodb:
+      auto-index-creation: true
+      host: localhost
+      port: 27017
+      database: demo
+
+oauth:
+  github:
+    client:
+      id: ${GITHUB_CLIENT_ID}
+      secret: ${GITHUB_CLIENT_SECRET}

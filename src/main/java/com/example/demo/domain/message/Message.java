@@ -9,7 +9,7 @@ import java.util.UUID;
 public class Message {
 
     private UUID id;
-    private UUID creator;
+    private String creator;
     private String content;
     private Boolean read;
     private Boolean updated;

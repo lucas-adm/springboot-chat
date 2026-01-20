@@ -1,17 +1,26 @@
 package com.example.demo.domain.user;
 
 import lombok.Data;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.Document;
 
-import java.util.UUID;
-
+@Document(collection = "users")
 @Data
 public class User {
 
-    private UUID id;
-    private String status;
+    @Id
+    private String id;
+    private String avatar;
     private String username;
     private String displayName;
-    private String avatar;
-    private String highlight;
+    private String bio;
+
+    public User(String id, String avatar, String username, String displayName, String bio) {
+        this.id = id;
+        this.avatar = avatar;
+        this.username = username;
+        this.displayName = displayName;
+        this.bio = bio;
+    }
 
 }

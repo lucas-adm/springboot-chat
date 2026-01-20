@@ -1,13 +1,13 @@
-package com.example.demo.application.controller.chat;
+package com.example.demo.application.controllers.chat;
 
-import com.example.demo.application.dto.in.chat.MsgDltInput;
-import com.example.demo.application.dto.in.chat.MsgInput;
-import com.example.demo.application.dto.in.chat.MsgUpdtInput;
-import com.example.demo.application.dto.in.chat.TypingInput;
-import com.example.demo.application.dto.out.chat.MsgDltOutput;
-import com.example.demo.application.dto.out.chat.MsgOutput;
-import com.example.demo.application.dto.out.chat.MsgUpdtOutput;
-import com.example.demo.application.dto.out.chat.TypingOutput;
+import com.example.demo.application.dtos.in.chat.MsgDltInput;
+import com.example.demo.application.dtos.in.chat.MsgInput;
+import com.example.demo.application.dtos.in.chat.MsgUpdtInput;
+import com.example.demo.application.dtos.in.chat.TypingInput;
+import com.example.demo.application.dtos.out.chat.MsgDltOutput;
+import com.example.demo.application.dtos.out.chat.MsgOutput;
+import com.example.demo.application.dtos.out.chat.MsgUpdtOutput;
+import com.example.demo.application.dtos.out.chat.TypingOutput;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.SendTo;
 import org.springframework.stereotype.Controller;

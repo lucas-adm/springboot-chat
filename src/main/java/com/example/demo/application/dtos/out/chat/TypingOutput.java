@@ -1,4 +1,4 @@
-package com.example.demo.application.dto.out.chat;
+package com.example.demo.application.dtos.out.chat;
 
 import com.example.demo.domain.user.User;
 
