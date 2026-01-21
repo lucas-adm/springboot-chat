@@ -1,53 +1,49 @@
 package com.example.demo.application.controllers.chat;
 
-import com.example.demo.application.dtos.in.chat.MsgDltInput;
-import com.example.demo.application.dtos.in.chat.MsgInput;
-import com.example.demo.application.dtos.in.chat.MsgUpdtInput;
-import com.example.demo.application.dtos.in.chat.TypingInput;
-import com.example.demo.application.dtos.out.chat.MsgDltOutput;
-import com.example.demo.application.dtos.out.chat.MsgOutput;
-import com.example.demo.application.dtos.out.chat.MsgUpdtOutput;
+import com.example.demo.application.dtos.in.chat.*;
 import com.example.demo.application.dtos.out.chat.TypingOutput;
+import com.example.demo.application.dtos.out.message.MessageOutput;
+import com.example.demo.domain.message.Message;
+import com.example.demo.domain.message.MessageService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.SendTo;
 import org.springframework.stereotype.Controller;
 
-import java.time.Instant;
-
 @Controller
+@RequiredArgsConstructor
 public class ChatController {
+
+    private final MessageService service;
 
     @MessageMapping("/typing")
     @SendTo("/topics/typing")
-    public TypingOutput typed(TypingInput input) {
+    public TypingOutput type(TypingInput input) {
         return new TypingOutput(input.user(), input.typing());
     }
 
     @MessageMapping("/msg")
     @SendTo("/topics/msg")
-    public MsgOutput create(MsgInput input) {
-        return new MsgOutput(input.user(), input.message());
+    public MessageOutput create(MessageInput input) {
+        return service.create(input.user(), input.content());
     }
 
     @MessageMapping("/read")
     @SendTo("/topics/read")
-    public MsgUpdtOutput read(MsgUpdtInput input) {
-        input.message().setRead(true);
-        return new MsgUpdtOutput(input.message());
+    public Message read(ReadInput input) {
+        return service.read(input.id());
     }
 
     @MessageMapping("/update")
     @SendTo("/topics/update")
-    public MsgUpdtOutput updated(MsgUpdtInput input) {
-        input.message().setUpdatedAt(Instant.now());
-        input.message().setUpdated(true);
-        return new MsgUpdtOutput(input.message());
+    public Message updated(UpdateInput input) {
+        return service.update(input.id(), input.content());
     }
 
     @MessageMapping("/delete")
     @SendTo("/topics/delete")
-    public MsgDltOutput deleted(MsgDltInput input) {
-        return new MsgDltOutput(input.message());
+    public Message deleted(DeleteInput input) {
+        return service.delete(input.id());
     }
 
 }
