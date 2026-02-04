@@ -25,12 +25,12 @@ public class ChatController {
     @MessageMapping("/msg")
     @SendTo("/topics/msg")
     public MessageOutput create(MessageInput input) {
-        return service.create(input.user(), input.content());
+        return service.create(input.user(), input.clientId(), input.content());
     }
 
     @MessageMapping("/read")
     @SendTo("/topics/read")
-    public Message read(ReadInput input) {
+    public MessageOutput read(ReadInput input) {
         return service.read(input.id());
     }
 

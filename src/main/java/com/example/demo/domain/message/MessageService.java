@@ -21,17 +21,18 @@ public class MessageService {
     private final MessageRepository repository;
     private final UserRepository uRepository;
 
-    public MessageOutput create(User user, String content) {
-        Message message = Message.create(user.getId(), content);
+    public MessageOutput create(User user, String clientId, String content) {
+        Message message = Message.create(clientId, user.getId(), content);
         repository.save(message);
         return new MessageOutput(user, message);
     }
 
-    public Message read(String id) {
+    public MessageOutput read(String id) {
         Message message = repository.findById(id).orElseThrow();
+        User user = uRepository.findById(message.getCreator()).orElseThrow();
         message.setRead(true);
         repository.save(message);
-        return message;
+        return new MessageOutput(user, message);
     }
 
     public Message update(String id, String content) {
