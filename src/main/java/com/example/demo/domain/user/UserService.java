@@ -5,6 +5,8 @@ import com.example.demo.oauths.OAuthFacade;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 @RequiredArgsConstructor
 public class UserService {
@@ -23,6 +25,10 @@ public class UserService {
                     data.bio()
             ));
         });
+    }
+
+    public List<User> getAll() {
+        return repository.findAll();
     }
 
 }
