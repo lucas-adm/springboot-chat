@@ -19,16 +19,18 @@ public class Message {
     @CreatedDate
     private Instant createdAt;
     private Instant updatedAt;
-    private Boolean read;
     private Boolean updated;
+    private Boolean read;
+    private Boolean deleted;
 
     public static Message create(String clientId, String creator, String content) {
         Message message = new Message();
         message.clientId = clientId;
         message.creator = creator;
         message.content = content;
-        message.read = false;
         message.updated = false;
+        message.read = false;
+        message.deleted = false;
         return message;
     }
 

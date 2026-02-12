@@ -64,7 +64,7 @@ public class ChatController {
 
     @MessageMapping("/delete")
     @SendTo("/topics/delete")
-    public Message deleted(DeleteInput input) {
+    public MessageOutput deleted(DeleteInput input) {
         return service.delete(input.id());
     }
 

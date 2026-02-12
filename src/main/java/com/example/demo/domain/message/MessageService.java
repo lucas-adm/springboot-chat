@@ -44,14 +44,17 @@ public class MessageService {
         return message;
     }
 
-    public Message delete(String id) {
+    public MessageOutput delete(String id) {
         Message message = repository.findById(id).orElseThrow();
-        repository.delete(message);
-        return message;
+        User user = uRepository.findById(message.getCreator()).orElseThrow();
+        message.setContent(null);
+        message.setDeleted(true);
+        repository.save(message);
+        return new MessageOutput(user, message);
     }
 
     public List<MessageOutput> getAll() {
-        List<Message> messages = repository.findAll();
+        List<Message> messages = repository.findAllByOrderByCreatedAtAsc();
         Set<String> ids = messages.stream().map(Message::getCreator).collect(Collectors.toSet());
         Map<String, User> users = uRepository.findAllById(ids).stream().collect(Collectors.toMap(User::getId, Function.identity()));
         return messages.stream().map(msg -> new MessageOutput(users.get(msg.getCreator()), msg)).toList();
