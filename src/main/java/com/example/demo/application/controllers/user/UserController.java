@@ -20,9 +20,14 @@ public class UserController {
         return service.getAll();
     }
 
-    @PostMapping("/auth")
-    public User login(@RequestBody CodeInput input) {
-        return service.auth(input.code());
+    @GetMapping("/random")
+    public User loginViaRandomUser() {
+        return service.authViaRandomUser();
+    }
+
+    @PostMapping("/github")
+    public User loginViaGitHub(@RequestBody CodeInput input) {
+        return service.authViaGitHub(input.code());
     }
 
 }

@@ -14,17 +14,24 @@ public class UserService {
     private final UserRepository repository;
     private final OAuthFacade facade;
 
-    public User auth(String key) {
+    private User saveIfNotExists(OAuthOutput data) {
+        return repository.findById(data.id()).orElseGet(() -> repository.save(new User(
+                data.id(),
+                data.avatar(),
+                data.username(),
+                data.displayName(),
+                data.bio()
+        )));
+    }
+
+    public User authViaRandomUser() {
+        OAuthOutput data = facade.getRandomUser();
+        return saveIfNotExists(data);
+    }
+
+    public User authViaGitHub(String key) {
         OAuthOutput data = facade.getGitHubUser(key);
-        return repository.findById(data.id()).orElseGet(() -> {
-            return repository.save(new User(
-                    data.id(),
-                    data.avatar(),
-                    data.username(),
-                    data.displayName(),
-                    data.bio()
-            ));
-        });
+        return saveIfNotExists(data);
     }
 
     public List<User> getAll() {
