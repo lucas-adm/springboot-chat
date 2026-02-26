@@ -35,13 +35,14 @@ public class MessageService {
         return new MessageOutput(user, message);
     }
 
-    public Message update(String id, String content) {
+    public MessageOutput update(String id, String content) {
         Message message = repository.findById(id).orElseThrow();
+        User user = uRepository.findById(message.getCreator()).orElseThrow();
         message.setContent(content);
         message.setUpdatedAt(Instant.now());
         message.setUpdated(true);
         repository.save(message);
-        return message;
+        return new MessageOutput(user, message);
     }
 
     public MessageOutput delete(String id) {

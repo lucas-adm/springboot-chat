@@ -3,16 +3,11 @@ package com.example.demo.application.controllers.chat;
 import com.example.demo.application.dtos.in.chat.*;
 import com.example.demo.application.dtos.out.chat.TypingOutput;
 import com.example.demo.application.dtos.out.message.MessageOutput;
-import com.example.demo.domain.message.Message;
 import com.example.demo.domain.message.MessageService;
 import com.example.demo.domain.user.UserPresenceService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.messaging.MessageHeaders;
-import org.springframework.messaging.handler.annotation.Header;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.SendTo;
-import org.springframework.messaging.simp.SimpMessageHeaderAccessor;
-import org.springframework.messaging.simp.SimpMessageType;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Controller;
 
@@ -23,20 +18,6 @@ public class ChatController {
     private final MessageService service;
     private final UserPresenceService presence;
     private final SimpMessagingTemplate messagingTemplate;
-
-    @MessageMapping("/snapshot")
-    public void snapshot(@Header("simpSessionId") String sessionId) {
-        SimpMessageHeaderAccessor accessor = SimpMessageHeaderAccessor.create(SimpMessageType.MESSAGE);
-        accessor.setSessionId(sessionId);
-        accessor.setLeaveMutable(true);
-        MessageHeaders headers = accessor.getMessageHeaders();
-        messagingTemplate.convertAndSendToUser(
-                sessionId,
-                "/queue/snapshot",
-                presence.getOnlineIds(),
-                headers
-        );
-    }
 
     @MessageMapping("/typing")
     @SendTo("/topics/typing")
@@ -58,7 +39,7 @@ public class ChatController {
 
     @MessageMapping("/update")
     @SendTo("/topics/update")
-    public Message updated(UpdateInput input) {
+    public MessageOutput updated(UpdateInput input) {
         return service.update(input.id(), input.content());
     }
 
